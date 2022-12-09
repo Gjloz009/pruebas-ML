@@ -10,7 +10,12 @@ si es con onehot encoder o con get dummies si cambai mucho
 
 
 Los resultados máximos que conseguimos en accuracy es de:
-0.8 aprox bajo un random forest sin modificar hiperparametros
+0.7 aprox bajo un random forest sin modificar hiperparametros
+en validación simple sin utilizar CV
+-faltaría escoger hiperparametros con cv
+-checar cuales son los atributos importantes que involucran al modelo
+y seleccionar los mejores 
+-falta hacer un solo pipeline que ejecute todo
 '''
 '''LIBRERIAS'''
 import pandas as pd
@@ -112,6 +117,29 @@ random_forest.fit(X_train,Y_train)
 xg_boost.fit(X_train,Y_train)
 
 
+ex_1_tr =logic_reg.predict(X_train)
+ex_2_tr = random_forest.predict(X_train)
+ex_3_tr = xg_boost.predict(X_train)
+
+confusion_matrix(Y_train,ex_1_tr)
+accuracy_score(Y_train,ex_1_tr)
+
+confusion_matrix(Y_train,ex_2_tr)
+accuracy_score(Y_train,ex_2_tr)
+'''
+RESULTADOS DEL ENTRENAMIENTO:
+>>> confusion_matrix(Y_train,ex_1_tr)
+array([[2690,  747],
+       [1159, 2358]], dtype=int64)
+>>> accuracy_score(Y_train,ex_1_tr)
+0.725913143514524
+>>> confusion_matrix(Y_train,ex_2_tr)
+array([[3187,  250],
+       [ 124, 3393]], dtype=int64)
+>>> accuracy_score(Y_train,ex_2_tr)
+0.9462180040264596
+'''
+
 ex_1 =logic_reg.predict(X_valid)
 ex_2 = random_forest.predict(X_valid)
 ex_3 = xg_boost.predict(X_valid)
@@ -124,7 +152,38 @@ accuracy_score(Y_valid,ex_2)
 
 confusion_matrix(Y_valid,ex_3)
 accuracy_score(Y_valid,ex_3)
+'''
+RESULTADOS VALIDACION
+>>> confusion_matrix(Y_valid,ex_1)
+array([[696, 182],
+       [289, 572]], dtype=int64)
+>>> accuracy_score(Y_valid,ex_1)
+0.7291546866014951
+>>> confusion_matrix(Y_valid,ex_2)
+array([[650, 228],
+       [286, 575]], dtype=int64)
+>>> accuracy_score(Y_valid,ex_2)
+0.7044278320874066
 
+'''
+'''
+Probaremos cross-validation a ver que pasa
+
+'''
+from sklearn.metrics import matthews_corrcoef
+from sklearn.model_selection import cross_val_score
+from sklearn.metrics import SCORERS
+sorted(sklearn.metrcs.SCORERS.keys())
+SCORERS.keys()
+
+scores = cross_val_score(random_forest, X_train, Y_train, scoring= 'f1',cv=10)
+
+def scores_print(scores):
+    print('scores',scores)
+    print('mean',scores.mean())
+    print('std',scores.std())
+
+scores_print(scores)
 '''
 Haciendolo con spare matrix & onehotencodr
 '''
