@@ -8,6 +8,9 @@ sckit-learn
 La forma en que se usa como poner los valores tipo category 
 si es con onehot encoder o con get dummies si cambai mucho
 
+
+Los resultados máximos que conseguimos en accuracy es de:
+0.8 aprox bajo un random forest sin modificar hiperparametros
 '''
 '''LIBRERIAS'''
 import pandas as pd
